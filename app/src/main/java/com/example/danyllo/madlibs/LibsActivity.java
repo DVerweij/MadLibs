@@ -11,8 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -32,13 +37,21 @@ public class LibsActivity extends AppCompatActivity {
         storyObj = new Story(selectStory());
         prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         numbersLeft = (TextView) findViewById(R.id.textView);
+        wordNote = (TextView) findViewById(R.id.wordNote);
         wordET = (EditText) findViewById(R.id.editText);
         playGame();
     }
     private java.io.InputStream selectStory(){
         AssetManager ast = getApplicationContext().getAssets();
         try {
-            return ast.open("madlib1_tarzan.txt");
+            String[] filelist = ast.list("stories");
+            //File file = new File("file:///android_asset/");
+            //File[] filelist = file.listFiles();
+            Log.d("LENGTH", String.valueOf(filelist.length));
+            Log.d("LIST", filelist[0]);
+            Random rand = new Random();
+            int num = rand.nextInt(filelist.length);
+            return ast.open(filelist[num]);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -48,7 +61,9 @@ public class LibsActivity extends AppCompatActivity {
         int placeholders = storyObj.getPlaceholderRemainingCount();
         numbersLeft.setText(placeholders + " word(s) left.");
         wordET.setText("");
-        wordET.setHint(storyObj.getNextPlaceholder());
+        String nextplaceholder = storyObj.getNextPlaceholder();
+        wordET.setHint(nextplaceholder);
+        wordNote.setText(generateExamples(nextplaceholder));
     }
     public void confirmWord(View view) {
         Log.d("WOW", "Button pushed");
@@ -76,5 +91,24 @@ public class LibsActivity extends AppCompatActivity {
             startActivity(storyactivity);
             finish();
         }
+    }
+    private String generateExamples(String placeholder) {
+        String readtext = "";
+        placeholder = placeholder.replace(" ", "");
+        AssetManager ast = getApplicationContext().getAssets();
+        String filePath = "examples/" + placeholder.toLowerCase() + "example.txt";
+        Log.d("FILEPATH", filePath);
+        try {
+            InputStream fileopen = ast.open(filePath);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fileopen));
+            String line;
+            while ((line = br.readLine()) != null) {
+                readtext = readtext + line + "\n";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("READTEXT", readtext);
+        return readtext;
     }
 }
