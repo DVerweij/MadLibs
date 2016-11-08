@@ -15,9 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NumberActivity" />
-        <activity android:name=".WinActivity" />
-        <activity android:name=".LibsActivity"></activity>
+        <activity android:name=".LibsActivity" />
+        <activity android:name=".StoryActivity"></activity>
     </application>
 
 </manifest>
