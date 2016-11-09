@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ public class StoryActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         String storytext = prefs.getString("storytext", "");
         story = (TextView) findViewById(R.id.textView2);
-        story.setText(storytext);
+        story.setText(Html.fromHtml(storytext)); //parses <b></b> also
     }
 
     //the restart button

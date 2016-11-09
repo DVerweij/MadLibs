@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class LibsActivity extends AppCompatActivity {
 
     //activity objects
-    TextView numbersLeft, wordNote;
+    TextView numbersLeft, wordNote, caption;
     EditText wordET;
     SharedPreferences prefs;
 
@@ -47,6 +47,8 @@ public class LibsActivity extends AppCompatActivity {
             numbersLeft = (TextView) findViewById(R.id.textView);
             wordNote = (TextView) findViewById(R.id.wordNote);
             wordET = (EditText) findViewById(R.id.editText);
+            caption = (TextView) findViewById(R.id.caption);
+            caption.setText("This story requires " + storyObj.getPlaceholderCount() + " word(s).");
         }
         playGame();
     }
@@ -112,8 +114,12 @@ public class LibsActivity extends AppCompatActivity {
             Log.d("NUMBERSCAN", String.valueOf(numberScan.hasNextInt()));
             //if not an integer, show toast to user and break out of function
             if(!numberScan.hasNextInt()) {
-                Toast isntInt = Toast.makeText(this, "Not a number", Toast.LENGTH_SHORT);
+                Toast isntInt = Toast.makeText(this, "Not an integer", Toast.LENGTH_SHORT);
                 isntInt.show();
+                return;
+            } else if (numberScan.nextInt() < 0){
+                Toast numTooLow = Toast.makeText(this, "Positive integer please", Toast.LENGTH_SHORT);
+                numTooLow.show();
                 return;
             }
         //otherwise: restrict input word
@@ -139,7 +145,7 @@ public class LibsActivity extends AppCompatActivity {
 
         }
         //if word goes past all statements, fill it in the story
-        storyObj.fillInPlaceholder(word);
+        storyObj.fillInPlaceholder("<b>" + word + "</b>"); //<b> to make bold
     }
 
     //function that links this activity to the next activity

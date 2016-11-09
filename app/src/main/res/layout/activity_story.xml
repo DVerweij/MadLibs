@@ -13,6 +13,14 @@
     tools:context="com.example.danyllo.madlibs.StoryActivity">
 
     <TextView
+        android:textSize="30sp"
+        android:text="Your Mad Libs Story"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textAlignment="center" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView2" />
