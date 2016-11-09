@@ -1,0 +1,3 @@
+Adjective: A word used to describe a noun or noun phrase.
+Please fill in an adjective.
+Examples: great, funny, girlish, awful

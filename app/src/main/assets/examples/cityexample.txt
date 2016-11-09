@@ -1,0 +1,2 @@
+Please fill in the name of a city you know of.
+Example: Paris, Amsterdam, St. Petersberg

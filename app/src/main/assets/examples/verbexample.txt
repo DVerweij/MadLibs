@@ -1,0 +1,3 @@
+Verb: A word that describes an action or situation
+Please fill in a verb in infinitive form
+Examples: drive, run, play

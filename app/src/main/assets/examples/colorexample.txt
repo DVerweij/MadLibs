@@ -1,0 +1,2 @@
+Please fill in a color of your choice.
+Example: Magenta, Yellow, Brown
