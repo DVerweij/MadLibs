@@ -18,31 +18,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class LibsActivity extends AppCompatActivity {
 
-    public static TextView numbersLeft, wordNote;
-    public static EditText wordET;
+    TextView numbersLeft, wordNote;
+    EditText wordET;
     public static Story storyObj;
 
     SharedPreferences prefs;
-    public static String storytext;
+    public static String storytext, nextplaceholder;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_libs);
-        storyObj = new Story(selectStory());
         prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
-        numbersLeft = (TextView) findViewById(R.id.textView);
-        wordNote = (TextView) findViewById(R.id.wordNote);
-        wordET = (EditText) findViewById(R.id.editText);
+        boolean isStartUp = prefs.getBoolean("isFirstRun", true);
+        if (isStartUp) {
+            storyObj = new Story(selectStory());
+            numbersLeft = (TextView) findViewById(R.id.textView);
+            wordNote = (TextView) findViewById(R.id.wordNote);
+            wordET = (EditText) findViewById(R.id.editText);
+        }
         playGame();
     }
     private java.io.InputStream selectStory(){
-        AssetManager ast = getApplicationContext().getAssets();
+        AssetManager ast = getResources().getAssets();
         try {
             String[] filelist = ast.list("stories");
             //File file = new File("file:///android_asset/");
@@ -51,7 +57,7 @@ public class LibsActivity extends AppCompatActivity {
             Log.d("LIST", filelist[0]);
             Random rand = new Random();
             int num = rand.nextInt(filelist.length);
-            return ast.open(filelist[num]);
+            return ast.open("stories/" + filelist[num]);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -61,16 +67,15 @@ public class LibsActivity extends AppCompatActivity {
         int placeholders = storyObj.getPlaceholderRemainingCount();
         numbersLeft.setText(placeholders + " word(s) left.");
         wordET.setText("");
-        String nextplaceholder = storyObj.getNextPlaceholder();
+        nextplaceholder = storyObj.getNextPlaceholder().toLowerCase();
         wordET.setHint(nextplaceholder);
         wordNote.setText(generateExamples(nextplaceholder));
     }
     public void confirmWord(View view) {
         Log.d("WOW", "Button pushed");
-        //EditText wordET = (EditText) findViewById(R.id.editText);
-        String word = wordET.getText().toString();
+        String word = wordET.getText().toString().trim();
         if (!(word.length() == 0)) {
-            storyObj.fillInPlaceholder(word);
+            parseWord(word);
         } else {
             Toast toast = Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT);
             toast.show();
@@ -84,6 +89,37 @@ public class LibsActivity extends AppCompatActivity {
             playGame();
         }
     }
+
+    private void parseWord(String word) {
+        if (nextplaceholder.equals("number")) {
+            Scanner numberScan = new Scanner(word);
+            Log.d("NUMBERSCAN", String.valueOf(numberScan.hasNextInt()));
+            if(!numberScan.hasNextInt()) {
+                Toast isInt = Toast.makeText(this, "Not a number", Toast.LENGTH_SHORT);
+                isInt.show();
+                return;
+            }
+        } else {
+            if (word.length() <= 1) {
+                Toast tooShort = Toast.makeText(this, "A longer word, please", Toast.LENGTH_SHORT);
+                tooShort.show();
+                return;
+            } else if (!word.matches("[a-zA-Z]+")){
+                Toast hasSymbols = Toast.makeText(this, "Only letters please", Toast.LENGTH_SHORT);
+                hasSymbols.show();
+                return;
+            } else if (nextplaceholder.equals("name") || nextplaceholder.equals("male name")) {
+                if (!Character.isUpperCase(word.charAt(0))) {
+                    Toast upCase = Toast.makeText(this, "Please make the first letter upper case", Toast.LENGTH_SHORT);
+                    upCase.show();
+                    return;
+                }
+            }
+
+        }
+        storyObj.fillInPlaceholder(word);
+    }
+
     public void finishStory(){
         storytext = prefs.getString("storytext", "");
         if(!(storytext.length() == 0)) {
