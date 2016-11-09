@@ -9,11 +9,18 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:configChanges="orientation"
+    android:configChanges="orientation|screenSize"
     tools:context="com.example.danyllo.madlibs.StoryActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView2" />
+
+    <Button
+        android:text="Click to restart"
+        android:onClick="restart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2" />
 </LinearLayout>

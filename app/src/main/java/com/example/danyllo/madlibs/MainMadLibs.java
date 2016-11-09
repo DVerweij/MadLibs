@@ -21,6 +21,8 @@ public class MainMadLibs extends AppCompatActivity {
         //prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         //forward();
     }
+
+    //function that on a click goes to the next activity
     public void gettingStarted(View view) {
         Intent getStarted = new Intent(this, LibsActivity.class);
         startActivity(getStarted);
