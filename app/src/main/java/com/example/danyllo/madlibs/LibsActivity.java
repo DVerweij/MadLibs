@@ -12,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -188,6 +186,7 @@ public class LibsActivity extends AppCompatActivity {
         }
     }
 
+    //button push function that resets activity (automatically initializing new story)
     public void differentStory(View view) {
         Intent restartActivity = new Intent(this, LibsActivity.class);
         startActivity(restartActivity);
