@@ -41,7 +41,11 @@ public class LibsActivity extends AppCompatActivity {
         boolean isStartUp = prefs.getBoolean("isFirstRun", true);
         // if first run, then initialize globals
         if (isStartUp) {
-            storyObj = new Story(selectStory()); //selectStory() is java.io.inputStream
+            if (savedInstanceState == null) {
+                storyObj = new Story(selectStory()); //selectStory() is java.io.inputStream
+            } else {
+                storyObj = (Story) savedInstanceState.getSerializable("story");
+            }
             numbersLeft = (TextView) findViewById(R.id.textView);
             wordNote = (TextView) findViewById(R.id.wordNote);
             wordET = (EditText) findViewById(R.id.editText);
@@ -49,6 +53,13 @@ public class LibsActivity extends AppCompatActivity {
             caption.setText("This story requires " + storyObj.getPlaceholderCount() + " word(s).");
         }
         playGame();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putSerializable("story", storyObj);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     //function which randomly selects story to play with
