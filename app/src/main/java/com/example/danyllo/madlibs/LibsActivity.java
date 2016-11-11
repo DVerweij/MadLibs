@@ -57,8 +57,6 @@ public class LibsActivity extends AppCompatActivity {
         AssetManager ast = getApplicationContext().getAssets();
         try {
             String[] filelist = ast.list("stories"); //get list of stories
-            Log.d("LENGTH", String.valueOf(filelist.length));
-            Log.d("LIST", filelist[0]);
             Random rand = new Random();
             int num = rand.nextInt(filelist.length);
             return ast.open("stories/" + filelist[num]); //open random story and return
@@ -85,7 +83,6 @@ public class LibsActivity extends AppCompatActivity {
         //if number has to be input, make sure it's a number (integer)
         if (nextplaceholder.equals("number")) {
             Scanner numberScan = new Scanner(word);
-            Log.d("NUMBERSCAN", String.valueOf(numberScan.hasNextInt()));
             //if not an integer, show toast to user and break out of function
             if(!numberScan.hasNextInt()) {
                 Toast isntInt = Toast.makeText(this, "Not an integer", Toast.LENGTH_SHORT);
@@ -146,7 +143,6 @@ public class LibsActivity extends AppCompatActivity {
         AssetManager ast = getApplicationContext().getAssets();
         //get specific example file for placeholder
         String filePath = "examples/" + placeholder.toLowerCase() + "example.txt";
-        Log.d("FILEPATH", filePath);
         //read the lines of the file
         try {
             InputStream fileopen = ast.open(filePath);
@@ -159,13 +155,11 @@ public class LibsActivity extends AppCompatActivity {
             e.printStackTrace();
             return readtext; //if not found, return empty string
         }
-        Log.d("READTEXT", readtext);
         return readtext;
     }
 
     //function of button click
     public void confirmWord(View view) {
-        Log.d("WOW", "Button pushed");
         String word = wordET.getText().toString().trim(); //remove trailing whitespace
         if (!(word.length() == 0)) {
             parseWord(word); //if anything was put in, parse it

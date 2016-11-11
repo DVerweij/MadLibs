@@ -10,16 +10,10 @@ import android.view.View;
 
 public class MainMadLibs extends AppCompatActivity {
 
-    //SharedPreferences prefs;
-    //String name;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_mad_libs);
-
-        //prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
-        //forward();
     }
 
     //function that on a click goes to the next activity
@@ -28,26 +22,4 @@ public class MainMadLibs extends AppCompatActivity {
         startActivity(getStarted);
         finish();
     }
-
-    /*public void save(View view) {
-        EditText nameET = (EditText) findViewById(R.id.editText);
-        name = nameET.getText().toString();
-        if(!(name.length == 0)) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("name", name);
-            editor.commit();
-            forward();
-        } else {
-            Toast toast = Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
-    public void forward(){
-        name = prefs.getString("name", "");
-        if(!(name.length == 0)) {
-            Intent gotonumberactivity = new Intent(this, NumberActivity.class);
-            startActivity(gotonumberactivity);
-            finish();
-        }
-    }*/
 }
