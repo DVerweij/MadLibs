@@ -141,7 +141,8 @@ public class LibsActivity extends AppCompatActivity {
     //Function that reads a text file with an example based on the type of placeholder
     private String generateExamples(String placeholder) {
         String readtext = "";
-        placeholder = placeholder.replace(" ", ""); //delete whitespace
+        //delete whitespace and non-alphabetical characters
+        placeholder = placeholder.replace(" ", "").replaceAll("[^a-zA-Z]", "");
         AssetManager ast = getApplicationContext().getAssets();
         //get specific example file for placeholder
         String filePath = "examples/" + placeholder.toLowerCase() + "example.txt";
