@@ -82,30 +82,6 @@ public class LibsActivity extends AppCompatActivity {
         wordNote.setText(generateExamples(nextplaceholder)); //generates a hint for the user
     }
 
-    //function of button click
-    public void confirmWord(View view) {
-        Log.d("WOW", "Button pushed");
-        String word = wordET.getText().toString().trim(); //remove trailing whitespace
-        if (!(word.length() == 0)) {
-            parseWord(word); //if anything was put in, parse it
-        } else { //else have user try it again
-            Toast toast = Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        //if all placeholders filled in, go to next screen
-        if (storyObj.isFilledIn()) {
-            //save the story to use in the next activity
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putString("storytext", storyObj.toString());
-            edit.apply();
-            //go to next screen
-            finishStory();
-        //otherwise play the game with remaining placeholders
-        } else {
-            playGame();
-        }
-    }
-
     //word parser function
     private void parseWord(String word) {
         //if number has to be input, make sure it's a number (integer)
@@ -117,9 +93,15 @@ public class LibsActivity extends AppCompatActivity {
                 Toast isntInt = Toast.makeText(this, "Not an integer", Toast.LENGTH_SHORT);
                 isntInt.show();
                 return;
+                //prevention of negative numbers
             } else if (numberScan.nextInt() < 0){
-                Toast numTooLow = Toast.makeText(this, "Positive integer please", Toast.LENGTH_SHORT);
+                Toast numTooLow = Toast.makeText(this, "At least zero please", Toast.LENGTH_SHORT);
                 numTooLow.show();
+                return;
+                //no spaces to prevent double numbers
+            } else if (word.contains(" ")) {
+                Toast invalid = Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT);
+                invalid.show();
                 return;
             }
         //otherwise: restrict input word
@@ -134,8 +116,8 @@ public class LibsActivity extends AppCompatActivity {
                 Toast hasSymbols = Toast.makeText(this, "Only letters please", Toast.LENGTH_SHORT);
                 hasSymbols.show();
                 return;
-            //if a name is to be put in, make sure the first letter is capitalized
-            } else if (nextplaceholder.equals("person's name") || nextplaceholder.equals("male name")) {
+            //if a (city) name is to be put in, make sure the first letter is capitalized
+            } else if (nextplaceholder.contains("name") || nextplaceholder.equals("city")) {
                 if (!Character.isUpperCase(word.charAt(0))) {
                     Toast upCase = Toast.makeText(this, "Please make the first letter upper case", Toast.LENGTH_SHORT);
                     upCase.show();
@@ -180,5 +162,35 @@ public class LibsActivity extends AppCompatActivity {
         }
         Log.d("READTEXT", readtext);
         return readtext;
+    }
+
+    //function of button click
+    public void confirmWord(View view) {
+        Log.d("WOW", "Button pushed");
+        String word = wordET.getText().toString().trim(); //remove trailing whitespace
+        if (!(word.length() == 0)) {
+            parseWord(word); //if anything was put in, parse it
+        } else { //else have user try it again
+            Toast toast = Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        //if all placeholders filled in, go to next screen
+        if (storyObj.isFilledIn()) {
+            //save the story to use in the next activity
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putString("storytext", storyObj.toString());
+            edit.apply();
+            //go to next screen
+            finishStory();
+            //otherwise play the game with remaining placeholders
+        } else {
+            playGame();
+        }
+    }
+
+    public void differentStory(View view) {
+        Intent restartActivity = new Intent(this, LibsActivity.class);
+        startActivity(restartActivity);
+        finish();
     }
 }

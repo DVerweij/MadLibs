@@ -19,9 +19,6 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/madlibs"
         android:id="@+id/imageView3"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginLeft="39dp"
         android:layout_marginStart="39dp" />
 
@@ -30,8 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView6"
-        android:layout_below="@+id/imageView3"
-        android:layout_centerHorizontal="true" />
+        android:textAlignment="textStart"
+        android:layout_gravity="start"/>
 
     <Button
         android:text="Let's get ROOIGHT into the libs!!"
@@ -40,7 +37,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="39dp"
         android:id="@+id/button4"
-        android:textAllCaps="false"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:textAllCaps="false" />
 </LinearLayout>
