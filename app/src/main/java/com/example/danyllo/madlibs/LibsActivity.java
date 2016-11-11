@@ -55,6 +55,8 @@ public class LibsActivity extends AppCompatActivity {
         playGame();
     }
 
+    //Function to stop refresh at rotation.
+    // http://stackoverflow.com/questions/5123407/losing-data-when-rotate-screen
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
 
